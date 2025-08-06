@@ -1,183 +1,368 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BITVERSE</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BITVERSE - Melhor Jogo Vem Por Aí</title>
+<style>
+  /* Reset básico */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body, html {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0d001f;
+    color: #eee;
+    overflow-x: hidden;
+  }
 
-    body {
-      font-family: 'Orbitron', sans-serif;
-      background: url('https://images.unsplash.com/photo-1608134131864-9e4b6a8827b5') no-repeat center center/cover;
-      color: white;
-      height: 100vh;
-      overflow: hidden;
-    }
+  /* Fundo animado canvas */
+  #bgCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0;
+    background: linear-gradient(135deg, #1a0033, #0d001f);
+  }
 
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      height: 70px;
-      background: rgba(0, 0, 0, 0.6);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 30px;
-      z-index: 1000;
-      box-shadow: 0 0 10px #000;
-    }
+  /* Container principal */
+  .container {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 15px 80px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
 
-    .logo {
-      font-size: 1.8rem;
-      font-weight: bold;
-      color: #f7b500;
-      letter-spacing: 2px;
-    }
+  /* Header fixo */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: rgba(18, 0, 46, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    box-shadow: 0 0 20px #7f00ffaa;
+    z-index: 20;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 900;
+    color: #b657ff;
+    text-shadow: 0 0 10px #b657ff;
+    cursor: default;
+  }
 
-    .menu-btn {
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      width: 30px;
-    }
+  nav {
+    display: flex;
+    gap: 20px;
+  }
+  nav a {
+    color: #b657ff;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: 0.3s ease;
+    box-shadow: 0 0 8px #b657ff33;
+  }
+  nav a:hover, nav a:focus {
+    background: #b657ff33;
+    box-shadow: 0 0 15px #b657ffcc;
+    outline: none;
+  }
 
-    .menu-btn div {
-      height: 4px;
-      background: white;
-      margin: 5px 0;
-      border-radius: 2px;
-    }
+  main {
+    margin-top: 80px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 40px;
+  }
 
-    .side-menu {
-      position: fixed;
-      top: 0;
-      right: -300px;
-      width: 250px;
-      height: 100%;
-      background-color: #111;
-      padding: 60px 20px;
-      transition: 0.3s ease-in-out;
-      z-index: 999;
-      box-shadow: -4px 0 10px rgba(0, 0, 0, 0.7);
-    }
+  /* Título BITVERSE grande com efeito neon */
+  main .title {
+    font-size: 72px;
+    font-weight: 900;
+    color: #d48eff;
+    text-shadow:
+      0 0 10px #d48eff,
+      0 0 20px #d48eff,
+      0 0 40px #a84de0,
+      0 0 80px #7b1fa2;
+    letter-spacing: 10px;
+  }
 
-    .side-menu.show {
-      right: 0;
-    }
+  /* Texto MELHOR JOGO e VEM POR AÍ */
+  main .subtitles {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  main .subtitles div {
+    font-size: 38px;
+    font-weight: 700;
+    color: #e5b2ff;
+    text-shadow:
+      0 0 6px #b657ff,
+      0 0 10px #7b1fa2;
+    padding: 10px 25px;
+    border: 2px solid #b657ff;
+    border-radius: 25px;
+    cursor: default;
+    user-select: none;
+    transition: 0.3s ease;
+  }
+  main .subtitles div:hover {
+    background: #b657ff22;
+    box-shadow: 0 0 20px #b657ffcc;
+  }
 
-    .side-menu h2 {
-      color: #f7b500;
-      margin-bottom: 15px;
-      font-size: 1.3rem;
-    }
+  /* Botão Saiba Mais */
+  .btn-saiba {
+    background: linear-gradient(45deg, #7b1fa2, #d48eff);
+    border: none;
+    padding: 14px 40px;
+    font-size: 22px;
+    color: white;
+    font-weight: 700;
+    border-radius: 40px;
+    cursor: pointer;
+    box-shadow:
+      0 0 20px #d48eff,
+      0 5px 15px #7b1fa2;
+    transition: all 0.4s ease;
+  }
+  .btn-saiba:hover {
+    background: linear-gradient(45deg, #d48eff, #7b1fa2);
+    box-shadow:
+      0 0 35px #d48eff,
+      0 7px 25px #7b1fa2;
+    transform: translateY(-3px);
+  }
 
-    .side-menu a {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 15px;
-      background-color: #f7b500;
-      color: black;
-      text-decoration: none;
-      border-radius: 5px;
-      font-weight: bold;
-      transition: 0.2s ease;
+  /* Trailer section */
+  #trailer-section {
+    width: 90%;
+    max-width: 900px;
+    border-radius: 15px;
+    box-shadow:
+      0 0 40px #b657ff88;
+    overflow: hidden;
+  }
+  #trailer-section iframe, #trailer-section video {
+    width: 100%;
+    height: 500px;
+    border: none;
+    display: block;
+  }
+  @media (max-width: 600px) {
+    #trailer-section iframe, #trailer-section video {
+      height: 280px;
     }
+    main .title {
+      font-size: 42px;
+      letter-spacing: 6px;
+    }
+    main .subtitles div {
+      font-size: 24px;
+      padding: 8px 15px;
+    }
+    .btn-saiba {
+      font-size: 18px;
+      padding: 12px 32px;
+    }
+  }
 
-    .side-menu a:hover {
-      background-color: #ffcc33;
-    }
+  /* Galeria de carros e pistas */
+  #gallery {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 25px;
+    padding: 0 10px 50px;
+  }
+  #gallery figure {
+    background: #1e003f;
+    border: 2px solid #7b1fa2;
+    border-radius: 15px;
+    box-shadow:
+      0 0 15px #b657ffaa;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.4s ease;
+  }
+  #gallery figure:hover {
+    transform: scale(1.05);
+    box-shadow:
+      0 0 25px #d48effcc,
+      0 10px 30px #7b1fa2cc;
+  }
+  #gallery img {
+    width: 100%;
+    display: block;
+    border-radius: 15px 15px 0 0;
+  }
+  #gallery figcaption {
+    color: #d9b3ff;
+    font-weight: 700;
+    padding: 12px 15px;
+    text-align: center;
+    background: #300067;
+    user-select: none;
+  }
 
-    .main {
-      height: 100vh;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .main h1 {
-      font-size: 4vw;
-      color: white;
-      text-shadow: 0 0 15px black;
-    }
-
-    .main h2 {
-      font-size: 6vw;
-      color: #f7b500;
-      margin: 20px 0;
-      text-shadow: 0 0 15px #f7b500;
-    }
-
-    .main p {
-      font-size: 1.2rem;
-      color: #ccc;
-      margin-top: 10px;
-    }
-
-    .main .btn {
-      margin-top: 30px;
-      padding: 15px 30px;
-      font-size: 1rem;
-      background-color: #f7b500;
-      color: #000;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.3s ease;
-    }
-
-    .main .btn:hover {
-      background-color: #ffd700;
-    }
-
-    /* Responsivo */
-    @media(max-width: 600px) {
-      .main h1 { font-size: 8vw; }
-      .main h2 { font-size: 10vw; }
-      .main p { font-size: 1rem; }
-    }
-  </style>
+  /* Rodapé */
+  footer {
+    text-align: center;
+    color: #925db0;
+    font-size: 14px;
+    padding: 15px 0;
+    border-top: 1px solid #7b1fa2;
+    user-select: none;
+  }
+</style>
 </head>
 <body>
 
-  <header>
-    <div class="logo">BITVERSE</div>
-    <div class="menu-btn" onclick="toggleMenu()">
-      <div></div>
-      <div></div>
-      <div></div>
+<canvas id="bgCanvas"></canvas>
+
+<header>
+  <h1>BITVERSE</h1>
+  <nav>
+    <a href="#" id="helpFoundersBtn" target="_blank" rel="noopener">Ajude os fundadores</a>
+    <a href="https://www.tiktok.com/@bitverse" target="_blank" rel="noopener">TikTok @bitverse</a>
+  </nav>
+</header>
+
+<div class="container">
+  <main>
+    <div class="title" aria-label="BITVERSE">BITVERSE</div>
+    <div class="subtitles" aria-label="Destaques">
+      <div>MELHOR JOGO</div>
+      <div>VEM POR AÍ</div>
     </div>
-  </header>
+    <button class="btn-saiba" id="btnSaibaMais" aria-label="Botão Saiba Mais">Saiba mais</button>
 
-  <div class="side-menu" id="sideMenu">
-    <h2>Ajude os fundadores</h2>
-    <a href="https://www.tiktok.com/@bitverse" target="_blank">TikTok @bitverse</a>
-  </div>
+    <section id="trailer-section" aria-label="Trailer Oficial">
+      <!-- Troque o link abaixo pelo trailer oficial -->
+      <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" title="Trailer Oficial BITVERSE" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    </section>
 
-  <div class="main">
-    <h1>MELHOR JOGO</h1>
-    <h2>VEM POR AÍ</h2>
-    <p>Ajude os fundadores</p>
-    <button class="btn">Saiba mais</button>
-  </div>
+    <section id="gallery" aria-label="Galeria de Carros e Pistas">
+      <figure>
+        <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=600&q=80" alt="Carro esportivo na pista" loading="lazy" />
+        <figcaption>Carro esportivo</figcaption>
+      </figure>
+      <figure>
+        <img src="https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=600&q=80" alt="Pista de corrida iluminada" loading="lazy" />
+        <figcaption>Pista de corrida</figcaption>
+      </figure>
+      <figure>
+        <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=600&q=80" alt="Carro drift em movimento" loading="lazy" />
+        <figcaption>Carro drift</figcaption>
+      </figure>
+      <figure>
+        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80" alt="Pista noturna com neon" loading="lazy" />
+        <figcaption>Pista noturna</figcaption>
+      </figure>
+    </section>
+  </main>
+</div>
 
-  <script>
-    function toggleMenu() {
-      document.getElementById('sideMenu').classList.toggle('show');
+<footer>© 2025 BITVERSE. Todos os direitos reservados.</footer>
+
+<script>
+  // Abrir "Ajude os fundadores" em nova aba (exemplo, pode alterar a URL)
+  document.getElementById('helpFoundersBtn').addEventListener('click', e => {
+    e.preventDefault();
+    window.open('https://bitverse.example.com/ajude', '_blank', 'noopener');
+  });
+
+  // Botão Saiba Mais - scroll suave até galeria
+  document.getElementById('btnSaibaMais').addEventListener('click', () => {
+    document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Fundo animado em canvas com partículas neon (simples)
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let particles = [];
+
+  class Particle {
+    constructor() {
+      this.reset();
     }
-  </script>
+    reset() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.size = 1 + Math.random() * 2;
+      this.speedX = (Math.random() - 0.5) * 0.5;
+      this.speedY = (Math.random() - 0.5) * 0.5;
+      this.color = `rgba(182,87,255,${0.2 + Math.random()*0.6})`;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+        this.reset();
+      }
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.shadowColor = this.color;
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = this.color;
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function initParticles(count=120) {
+    particles = [];
+    for(let i=0; i<count; i++) {
+      particles.push(new Particle());
+    }
+  }
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+
+  function animate() {
+    ctx.clearRect(0,0,width,height);
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    resize();
+    initParticles();
+  });
+
+  resize();
+  initParticles();
+  animate();
+</script>
 
 </body>
 </html>
