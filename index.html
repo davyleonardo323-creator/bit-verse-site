@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BITVERSE - Enciclopédia Gamer de Linguagens</title>
+<title>BITVERSE - O Jogo</title>
 <style>
   /* Reset básico */
   * {
@@ -54,7 +54,7 @@
     transition: all 0.3s ease;
     user-select: none;
   }
-  nav a:hover {
+  nav a.active, nav a:hover {
     background: #a84de0aa;
     box-shadow: 0 0 25px #d48effcc;
     color: #f0e6ff;
@@ -78,199 +78,7 @@
       0 0 30px #b15aff,
       0 0 50px #7b1fa2;
     user-select: none;
-  }
-  /* Seção de linguagem */
-  section.language {
-    margin-bottom: 60px;
-    background: #2a005a;
-    padding: 25px 30px 30px;
-    border-radius: 18px;
-    box-shadow:
-      0 0 25px #b657ffcc;
-    transition: box-shadow 0.3s ease;
-  }
-  section.language:hover {
-    box-shadow:
-      0 0 40px #d48effdd;
-  }
-  section.language h2 {
-    font-size: 36px;
-    font-weight: 900;
-    color: #bb66ff;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    user-select: none;
-  }
-  section.language h2 img {
-    width: 48px;
-    height: 48px;
-    filter: drop-shadow(0 0 3px #bb66ff);
-  }
-  section.language p.description {
-    font-size: 18px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    color: #d7b3ff;
-    user-select: text;
-  }
-  pre.code-example {
-    background: #1b0033;
-    border-radius: 15px;
-    padding: 15px 20px;
-    font-size: 14px;
-    line-height: 1.4;
-    overflow-x: auto;
-    box-shadow: inset 0 0 15px #7b1fa2cc;
-    color: #e2cfff;
-    font-family: 'Fira Code', monospace, Consolas, monospace;
-    user-select: text;
-  }
-
-  /* Syntax Highlighting (básico) */
-  .keyword { color: #ff7aff; font-weight: 700; }
-  .string { color: #7affd4; }
-  .comment { color: #7a7a7a; font-style: italic; }
-  .function { color: #ffa07a; }
-  .number { color: #ffbb33; }
-  .operator { color: #d48eff; }
-
-  /* Scrollbar para código */
-  pre::-webkit-scrollbar {
-    height: 8px;
-  }
-  pre::-webkit-scrollbar-track {
-    background: #2a005a;
-    border-radius: 8px;
-  }
-  pre::-webkit-scrollbar-thumb {
-    background: #b657ffcc;
-    border-radius: 8px;
-  }
-
-  /* Ajuste de scroll para seções fixas */
-  section.language {
-    scroll-margin-top: 70px;
-  }
-
-  /* Seção Sobre */
-  section#about {
-    background: #22003d;
-    border-radius: 18px;
-    padding: 30px 40px;
-    margin-bottom: 60px;
-    box-shadow: 0 0 30px #bb55ffaa;
-    color: #e1caff;
-  }
-  section#about h2 {
-    font-size: 38px;
-    margin-bottom: 15px;
-    text-align: center;
-    color: #e3bfff;
-    text-shadow:
-      0 0 8px #d48eff;
-  }
-  section#about p {
-    font-size: 17px;
-    line-height: 1.6;
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  /* Formulário contato */
-  section#contact {
-    background: #330055;
-    border-radius: 18px;
-    padding: 30px 40px;
-    margin-bottom: 60px;
-    box-shadow: 0 0 30px #aa55ffbb;
-    color: #d7b7ff;
-  }
-  section#contact h2 {
-    font-size: 38px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #e3bfff;
-    text-shadow:
-      0 0 8px #d48eff;
-  }
-  form {
-    max-width: 500px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  form label {
-    font-weight: 600;
-    margin-bottom: 6px;
-    user-select: none;
-  }
-  form input, form textarea {
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: none;
-    background: #4b007f;
-    color: #eee;
-    font-size: 16px;
-    font-family: inherit;
-    box-shadow: inset 0 0 10px #a64fff88;
-    resize: vertical;
-    transition: background 0.3s ease;
-  }
-  form input:focus, form textarea:focus {
-    outline: none;
-    background: #6000b0;
-    box-shadow: 0 0 12px #d48eff;
-  }
-  form button {
-    background: #a84de0;
-    color: #fff;
-    font-weight: 700;
-    padding: 12px 0;
-    border-radius: 30px;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    text-shadow: 0 0 5px #7b1fa2;
-    transition: background 0.3s ease, transform 0.3s ease;
-  }
-  form button:hover {
-    background: #d48eff;
-    transform: scale(1.05);
-  }
-  form button:active {
-    transform: scale(0.95);
-  }
-
-  /* Footer */
-  footer {
-    text-align: center;
-    padding: 20px 15px;
-    font-size: 14px;
-    color: #925db0;
-    text-shadow: 0 0 8px #7b1fa2;
-    user-select: none;
-    background: #1a0033;
-  }
-
-  /* Responsive */
-  @media (max-width: 720px) {
-    h1.site-title {
-      font-size: 38px;
-      letter-spacing: 8px;
-    }
-    section.language h2 {
-      font-size: 28px;
-    }
-    pre.code-example {
-      font-size: 12px;
-    }
-    section#about, section#contact {
-      padding: 20px 25px;
-    }
+    animation: neonGlow 3s ease-in-out infinite;
   }
 
   /* Animação leve no título */
@@ -288,8 +96,127 @@
         0 0 70px #8b29b4;
     }
   }
-  h1.site-title {
-    animation: neonGlow 3s ease-in-out infinite;
+
+  /* Seções padrão */
+  section {
+    margin-bottom: 60px;
+    background: #2a005a;
+    padding: 25px 30px 30px;
+    border-radius: 18px;
+    box-shadow: 0 0 25px #b657ffcc;
+    color: #d7b3ff;
+  }
+
+  section h2 {
+    font-size: 36px;
+    font-weight: 900;
+    color: #bb66ff;
+    margin-bottom: 15px;
+    user-select: none;
+    text-shadow:
+      0 0 8px #d48eff;
+  }
+
+  /* Aba principal - texto do jogo */
+  #principal p {
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  /* Trailer em breve */
+  #principal .trailer {
+    margin-top: 30px;
+    background: #3b007f;
+    border-radius: 15px;
+    box-shadow: 0 0 25px #aa55ffbb;
+    color: #d48eff;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    padding: 50px 20px;
+    user-select: none;
+    letter-spacing: 4px;
+    text-shadow: 0 0 12px #a04aff;
+  }
+
+  /* Seção Jogo */
+  #jogo img {
+    display: block;
+    max-width: 100%;
+    border-radius: 18px;
+    box-shadow: 0 0 35px #b657ffcc;
+    margin: 20px auto;
+  }
+  #jogo p {
+    font-size: 17px;
+    line-height: 1.5;
+    max-width: 720px;
+    margin: 0 auto 20px;
+    text-align: justify;
+  }
+
+  /* Barras linguagens usadas */
+  #linguagens {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .barra {
+    background: #3a007a88;
+    border-radius: 20px;
+    padding: 12px 18px;
+    box-shadow: 0 0 20px #b657ffcc inset;
+  }
+  .barra h3 {
+    margin-bottom: 8px;
+    font-weight: 800;
+    color: #e0bfff;
+    user-select: none;
+    text-shadow: 0 0 6px #d48eff;
+  }
+  .barra ul {
+    list-style: none;
+    padding-left: 20px;
+    color: #d7b3ff;
+    font-size: 16px;
+  }
+  .barra ul li {
+    margin-bottom: 6px;
+    user-select: text;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 20px 15px;
+    font-size: 14px;
+    color: #925db0;
+    text-shadow: 0 0 8px #7b1fa2;
+    user-select: none;
+    background: #1a0033;
+  }
+  footer a {
+    color:#d48eff;
+    text-decoration:none;
+  }
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 720px) {
+    h1.site-title {
+      font-size: 38px;
+      letter-spacing: 8px;
+    }
+    section h2 {
+      font-size: 28px;
+    }
   }
 </style>
 </head>
@@ -297,352 +224,102 @@
 <header>
   BITVERSE
   <nav aria-label="Menu principal">
-    <a href="#python">Python</a>
-    <a href="#javascript">JavaScript</a>
-    <a href="#cpp">C++</a>
-    <a href="#java">Java</a>
-    <a href="#ruby">Ruby</a>
-    <a href="#go">Go</a>
-    <a href="#rust">Rust</a>
-    <a href="#php">PHP</a>
-    <a href="#csharp">C#</a>
-    <a href="#typescript">TypeScript</a>
-    <a href="#swift">Swift</a>
-    <a href="#kotlin">Kotlin</a>
-    <a href="#helpFounders" id="helpFoundersBtn">Ajude os fundadores</a>
+    <a href="#principal" class="active">Principal</a>
+    <a href="#jogo">Jogo</a>
+    <a href="#linguagens">Quais linguagens usamos no site</a>
   </nav>
 </header>
 
 <main>
-  <h1 class="site-title" aria-label="Título do site BITVERSE">BITVERSE</h1>
-
-  <!-- Sobre BITVERSE -->
-  <section id="about" tabindex="0" aria-labelledby="title-about" role="region">
-    <h2 id="title-about">Sobre o BITVERSE</h2>
+  <section id="principal" tabindex="0" role="region" aria-label="Seção principal sobre o jogo BITVERSE">
+    <h1 class="site-title">BITVERSE</h1>
     <p>
-      BITVERSE é uma enciclopédia gamer de linguagens de programação, feita para mostrar o poder e a beleza
-      do código, misturando tecnologia, arte e paixão por jogos.
-      Navegue pelas linguagens, veja exemplos reais e inspire-se para criar seus próprios mundos digitais.
+      BITVERSE é um jogo revolucionário que mistura velocidade, estratégia e adrenalina. 
+      Explore pistas incríveis, customize carros futuristas e desafie seus limites em corridas eletrizantes.
+      Prepare-se para viver uma experiência gamer imersiva, com gráficos vibrantes e uma trilha sonora de tirar o fôlego.
+      <br /><br />
+      O lançamento oficial está chegando — fique ligado para o trailer e novidades!
+    </p>
+    <div class="trailer" aria-label="Trailer do jogo BITVERSE em breve">TRAILER EM BREVE</div>
+  </section>
+
+  <section id="jogo" tabindex="0" role="region" aria-label="Seção sobre o jogo BITVERSE">
+    <h2>Jogo BITVERSE</h2>
+    <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=1080&q=80" alt="Imagem estilizada de carros de corrida futuristas" />
+    <p>
+      No BITVERSE, você não corre apenas contra o tempo — corre contra o impossível.  
+      Escolha seu carro, ajuste a performance, domine as pistas e desafie pilotos de todo o mundo.  
+      A atmosfera neon, o visual cyberpunk e o ritmo frenético vão te prender do começo ao fim.
+    </p>
+    <p>
+      Cada pista traz desafios únicos e efeitos visuais impressionantes, com fumaça, luzes dinâmicas e detalhes que fazem você se sentir dentro do jogo.
     </p>
   </section>
 
-  <!-- Python -->
-  <section class="language" id="python" tabindex="0" aria-labelledby="title-python" role="region">
-    <h2 id="title-python">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Logo Python" />
-      Python
-    </h2>
-    <p class="description">Python é uma linguagem poderosa, fácil de aprender e muito usada em ciência de dados, web e automação.</p>
-    <pre class="code-example" aria-label="Exemplo de código Python"><code>
-<span class="keyword">def</span> fibonacci(n):
-    <span class="keyword">a</span>, <span class="keyword">b</span> = 0, 1
-    <span class="keyword">for</span> _ <span class="keyword">in</span> range(n):
-        print(a)
-        a, b = b, a + b
+  <section id="linguagens" tabindex="0" role="region" aria-label="Linguagens usadas no site BITVERSE">
+    <h2>Quais linguagens usamos no site</h2>
 
-fibonacci(10)
-    </code></pre>
-  </section>
+    <div class="barra" aria-label="Linguagens de marcação e estilo">
+      <h3>Marcação e Estilo</h3>
+      <ul>
+        <li>HTML5</li>
+        <li>CSS3 (incluindo animações e flexbox)</li>
+      </ul>
+    </div>
 
-  <!-- JavaScript -->
-  <section class="language" id="javascript" tabindex="0" aria-labelledby="title-javascript" role="region">
-    <h2 id="title-javascript">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="Logo JavaScript" />
-      JavaScript
-    </h2>
-    <p class="description">JavaScript é a linguagem da web, permitindo páginas dinâmicas e interativas em todos os navegadores.</p>
-    <pre class="code-example" aria-label="Exemplo de código JavaScript"><code>
-<span class="keyword">function</span> fibonacci(n) {
-  <span class="keyword">let</span> a = 0, b = 1;
-  <span class="keyword">for</span> (<span class="keyword">let</span> i = 0; i &lt; n; i++) {
-    console.log(a);
-    [a, b] = [b, a + b];
-  }
-}
-fibonacci(10);
-    </code></pre>
-  </section>
+    <div class="barra" aria-label="Linguagens de programação client-side e scripts">
+      <h3>Programação Client-Side</h3>
+      <ul>
+        <li>JavaScript (validação do formulário, navegação ativa)</li>
+      </ul>
+    </div>
 
-  <!-- C++ -->
-  <section class="language" id="cpp" tabindex="0" aria-labelledby="title-cpp" role="region">
-    <h2 id="title-cpp">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="Logo C++" />
-      C++
-    </h2>
-    <p class="description">C++ é uma linguagem rápida e poderosa, muito usada em jogos, sistemas e software de alta performance.</p>
-    <pre class="code-example" aria-label="Exemplo de código C++"><code>
-<span class="keyword">#include</span> &lt;iostream&gt;
-<span class="keyword">using</span> <span class="keyword">namespace</span> std;
+    <div class="barra" aria-label="Ferramentas e frameworks adicionais">
+      <h3>Ferramentas e Frameworks</h3>
+      <ul>
+        <li>CDN para ícones (devicon)</li>
+        <li>Possível integração futura com React, Vue, etc.</li>
+      </ul>
+    </div>
 
-<span class="keyword">void</span> fibonacci(int n) {
-  int a = 0, b = 1;
-  <span class="keyword">for</span> (int i = 0; i &lt; n; i++) {
-    cout &lt;&lt; a &lt;&lt; endl;
-    int next = a + b;
-    a = b;
-    b = next;
-  }
-}
-
-int <span class="keyword">main</span>() {
-  fibonacci(10);
-  <span class="keyword">return</span> 0;
-}
-    </code></pre>
-  </section>
-
-  <!-- Java -->
-  <section class="language" id="java" tabindex="0" aria-labelledby="title-java" role="region">
-    <h2 id="title-java">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Logo Java" />
-      Java
-    </h2>
-    <p class="description">Java é uma linguagem robusta e multiplataforma, usada em aplicativos Android, enterprise e sistemas grandes.</p>
-    <pre class="code-example" aria-label="Exemplo de código Java"><code>
-<span class="keyword">public class</span> Fibonacci {
-  <span class="keyword">public static void</span> fibonacci(int n) {
-    int a = 0, b = 1;
-    <span class="keyword">for</span> (int i = 0; i &lt; n; i++) {
-      System.out.println(a);
-      int next = a + b;
-      a = b;
-      b = next;
-    }
-  }
-  <span class="keyword">public static void main(String[] args)</span> {
-    fibonacci(10);
-  }
-}
-    </code></pre>
-  </section>
-
-  <!-- Ruby -->
-  <section class="language" id="ruby" tabindex="0" aria-labelledby="title-ruby" role="region">
-    <h2 id="title-ruby">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg" alt="Logo Ruby" />
-      Ruby
-    </h2>
-    <p class="description">Ruby é uma linguagem elegante, fácil de ler, muito usada em desenvolvimento web com Rails.</p>
-    <pre class="code-example" aria-label="Exemplo de código Ruby"><code>
-<span class="keyword">def</span> fibonacci(n)
-  a, b = 0, 1
-  n.times do
-    puts a
-    a, b = b, a + b
-  end
-end
-
-fibonacci(10)
-    </code></pre>
-  </section>
-
-  <!-- Go -->
-  <section class="language" id="go" tabindex="0" aria-labelledby="title-go" role="region">
-    <h2 id="title-go">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" alt="Logo Go" />
-      Go
-    </h2>
-    <p class="description">Go (Golang) é uma linguagem simples, eficiente e rápida, ideal para sistemas e serviços em nuvem.</p>
-    <pre class="code-example" aria-label="Exemplo de código Go"><code>
-<span class="keyword">package</span> main
-<span class="keyword">import</span> "fmt"
-
-<span class="keyword">func</span> fibonacci(n int) {
-    a, b := 0, 1
-    <span class="keyword">for</span> i := 0; i &lt; n; i++ {
-        fmt.Println(a)
-        a, b = b, a + b
-    }
-}
-
-<span class="keyword">func</span> main() {
-    fibonacci(10)
-}
-    </code></pre>
-  </section>
-
-  <!-- Rust -->
-  <section class="language" id="rust" tabindex="0" aria-labelledby="title-rust" role="region">
-    <h2 id="title-rust">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg" alt="Logo Rust" />
-      Rust
-    </h2>
-    <p class="description">Rust é uma linguagem segura e rápida, focada em performance e segurança sem garbage collector.</p>
-    <pre class="code-example" aria-label="Exemplo de código Rust"><code>
-<span class="keyword">fn</span> fibonacci(n: u32) {
-    let (mut a, mut b) = (0, 1);
-    <span class="keyword">for</span> _ <span class="keyword">in</span> 0..n {
-        println!("{}", a);
-        let next = a + b;
-        a = b;
-        b = next;
-    }
-}
-
-<span class="keyword">fn</span> main() {
-    fibonacci(10);
-}
-    </code></pre>
-  </section>
-
-  <!-- PHP -->
-  <section class="language" id="php" tabindex="0" aria-labelledby="title-php" role="region">
-    <h2 id="title-php">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="Logo PHP" />
-      PHP
-    </h2>
-    <p class="description">PHP é uma linguagem de scripts amplamente usada para desenvolvimento web dinâmico e backend.</p>
-    <pre class="code-example" aria-label="Exemplo de código PHP"><code>
-<span class="keyword">&lt;?php</span>
-function fibonacci($n) {
-    $a = 0; $b = 1;
-    for ($i = 0; $i &lt; $n; $i++) {
-        echo $a . "\n";
-        $next = $a + $b;
-        $a = $b;
-        $b = $next;
-    }
-}
-fibonacci(10);
-<span class="keyword">?&gt;</span>
-    </code></pre>
-  </section>
-
-  <!-- C# -->
-  <section class="language" id="csharp" tabindex="0" aria-labelledby="title-csharp" role="region">
-    <h2 id="title-csharp">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" alt="Logo C#" />
-      C#
-    </h2>
-    <p class="description">C# é uma linguagem versátil da Microsoft, muito usada em jogos (Unity), apps e enterprise.</p>
-    <pre class="code-example" aria-label="Exemplo de código C#"><code>
-<span class="keyword">using</span> System;
-
-<span class="keyword">class</span> Program {
-  <span class="keyword">static void</span> fibonacci(int n) {
-    int a = 0, b = 1;
-    <span class="keyword">for</span> (int i = 0; i &lt; n; i++) {
-      Console.WriteLine(a);
-      int next = a + b;
-      a = b;
-      b = next;
-    }
-  }
-
-  <span class="keyword">static void Main</span>(string[] args) {
-    fibonacci(10);
-  }
-}
-    </code></pre>
-  </section>
-
-  <!-- TypeScript -->
-  <section class="language" id="typescript" tabindex="0" aria-labelledby="title-typescript" role="region">
-    <h2 id="title-typescript">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="Logo TypeScript" />
-      TypeScript
-    </h2>
-    <p class="description">TypeScript é um superconjunto do JavaScript que adiciona tipagem estática para código mais seguro.</p>
-    <pre class="code-example" aria-label="Exemplo de código TypeScript"><code>
-<span class="keyword">function</span> fibonacci(n: number): void {
-  <span class="keyword">let</span> a = 0, b = 1;
-  <span class="keyword">for</span> (<span class="keyword">let</span> i = 0; i &lt; n; i++) {
-    console.log(a);
-    [a, b] = [b, a + b];
-  }
-}
-fibonacci(10);
-    </code></pre>
-  </section>
-
-  <!-- Swift -->
-  <section class="language" id="swift" tabindex="0" aria-labelledby="title-swift" role="region">
-    <h2 id="title-swift">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" alt="Logo Swift" />
-      Swift
-    </h2>
-    <p class="description">Swift é a linguagem moderna da Apple para desenvolvimento iOS, macOS e sistemas seguros.</p>
-    <pre class="code-example" aria-label="Exemplo de código Swift"><code>
-<span class="keyword">func</span> fibonacci(_ n: Int) {
-  var a = 0
-  var b = 1
-  <span class="keyword">for</span> _ <span class="keyword">in</span> 0..<n {
-    print(a)
-    let next = a + b
-    a = b
-    b = next
-  }
-}
-
-fibonacci(10)
-    </code></pre>
-  </section>
-
-  <!-- Kotlin -->
-  <section class="language" id="kotlin" tabindex="0" aria-labelledby="title-kotlin" role="region">
-    <h2 id="title-kotlin">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" alt="Logo Kotlin" />
-      Kotlin
-    </h2>
-    <p class="description">Kotlin é a linguagem moderna para Android, combinando concisão e interoperabilidade com Java.</p>
-    <pre class="code-example" aria-label="Exemplo de código Kotlin"><code>
-<span class="keyword">fun</span> fibonacci(n: Int) {
-  var a = 0
-  var b = 1
-  <span class="keyword">repeat</span>(n) {
-    println(a)
-    val next = a + b
-    a = b
-    b = next
-  }
-}
-
-fibonacci(10)
-    </code></pre>
-  </section>
-
-  <!-- Formulário Contato -->
-  <section id="contact" tabindex="0" aria-labelledby="title-contact" role="region">
-    <h2 id="title-contact">Fale Conosco</h2>
-    <form id="contactForm" novalidate>
-      <label for="name">Nome</label>
-      <input type="text" id="name" name="name" required placeholder="Seu nome" aria-required="true" />
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required placeholder="seu@email.com" aria-required="true" />
-      <label for="message">Mensagem</label>
-      <textarea id="message" name="message" rows="5" required placeholder="Escreva sua mensagem aqui" aria-required="true"></textarea>
-      <button type="submit" aria-label="Enviar mensagem">Enviar</button>
-    </form>
   </section>
 </main>
 
 <footer>
   © 2025 BITVERSE. Todos os direitos reservados. &nbsp; | &nbsp;
-  <a href="https://www.tiktok.com/@bitverse" target="_blank" rel="noopener" style="color:#d48eff;text-decoration:none;">TikTok @bitverse</a>
+  <a href="https://www.tiktok.com/@bitverse" target="_blank" rel="noopener">TikTok @bitverse</a>
 </footer>
 
 <script>
-  // Abrir link "Ajude os fundadores" em nova aba
-  document.getElementById('helpFoundersBtn').addEventListener('click', e => {
-    e.preventDefault();
-    window.open('https://bitverse.example.com/ajude', '_blank', 'noopener');
+  // Controle visual do menu ativo
+  const navLinks = document.querySelectorAll('nav a');
+  function setActiveLink(hash) {
+    navLinks.forEach(link => {
+      if(link.getAttribute('href') === hash) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+
+  // Atualiza ativo ao clicar e ao scroll
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      setActiveLink(e.currentTarget.getAttribute('href'));
+    });
   });
 
-  // Validação simples do formulário de contato
-  const form = document.getElementById('contactForm');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const name = form.name.value.trim();
-    const email = form.email.value.trim();
-    const message = form.message.value.trim();
-
-    if (!name || !email || !message) {
-      alert('Por favor, preencha todos os campos antes de enviar.');
-      return;
-    }
-    // Simula envio
-    alert(`Obrigado, ${name}! Sua mensagem foi enviada com sucesso.`);
-    form.reset();
+  // Atualiza ativo no scroll (básico)
+  window.addEventListener('scroll', () => {
+    let fromTop = window.scrollY + 100;
+    let currentSectionId = 'principal';
+    document.querySelectorAll('main section').forEach(section => {
+      if(section.offsetTop <= fromTop) {
+        currentSectionId = '#' + section.id;
+      }
+    });
+    setActiveLink(currentSectionId);
   });
 </script>
 </body>
