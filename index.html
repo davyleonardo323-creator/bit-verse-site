@@ -1,169 +1,173 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>BITVERSE</title>
 <style>
+  /* Reset básico */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
   body, html {
-    margin: 0; padding: 0;
     height: 100%;
-    background: linear-gradient(135deg, #1a0a2a, #220e42);
+    background: #0a0a0a;
+    color: #b18aff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #d9b8ff;
-    overflow-x: hidden;
+    overflow: hidden;
   }
-
-  /* Fundo pista neon Japão */
-  .track {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background:
-      linear-gradient(90deg, transparent 48%, #5e00ff 48%, #5e00ff 52%, transparent 52%),
-      linear-gradient(0deg, transparent 48%, #8a2be2 48%, #8a2be2 52%, transparent 52%);
-    background-size: 80px 80px;
-    opacity: 0.15;
-    z-index: 0;
-  }
-
-  /* Texto BITVERSE */
-  .main-text {
+  .container {
     position: relative;
-    z-index: 15;
     height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    user-select: none;
-    pointer-events: none;
-  }
-
-  .main-text h1 {
-    font-size: 9rem;
-    text-shadow: 0 0 30px #a065ff, 0 0 50px #8a2be2;
-    margin-bottom: 0.2em;
-  }
-
-  .main-text p {
-    font-size: 2.5rem;
-    color: #b392ff;
-    letter-spacing: 2.5px;
-  }
-
-  /* Imagem estática Paul Walker + Skyline */
-  .paul-skyline {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 450px;
-    max-height: 60vh;
     z-index: 10;
-    filter: drop-shadow(0 0 12px #6a42d4);
-    user-select: none;
-  }
-
-  /* GIF animado do carro drifting (anime style) */
-  .drift-gif {
-    position: fixed;
-    bottom: 10vh;
-    right: 5vw;
-    width: 220px;
-    height: auto;
-    z-index: 12;
-    filter: drop-shadow(0 0 10px #b660ff);
-    user-select: none;
-    animation: driftMoveRight 10s linear infinite;
-  }
-
-  /* Outro GIF de carro drifting (cópia com delay para repetir) */
-  .drift-gif-2 {
-    position: fixed;
-    bottom: 20vh;
-    right: 30vw;
-    width: 180px;
-    height: auto;
-    z-index: 11;
-    filter: drop-shadow(0 0 10px #c57fff);
-    user-select: none;
-    animation: driftMoveRight 12s linear infinite;
-    animation-delay: 6s;
-  }
-
-  /* Animação de movimento horizontal repetido */
-  @keyframes driftMoveRight {
-    0% {
-      transform: translateX(100vw);
-      opacity: 0;
-    }
-    10% {
-      opacity: 1;
-    }
-    90% {
-      transform: translateX(-250px);
-      opacity: 1;
-    }
-    100% {
-      transform: translateX(-250px);
-      opacity: 0;
-    }
-  }
-
-  /* Menu lateral "Ajude os desenvolvedores" */
-  .sidebar {
-    position: fixed;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    background: #330066cc;
-    padding: 20px;
-    border-radius: 10px 0 0 10px;
-    color: #e1caff;
-    font-weight: 600;
     text-align: center;
-    width: 230px;
-    box-shadow: -4px 0 8px #5a2db0;
-    cursor: default;
-    user-select: none;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 6vw;
+    font-weight: 900;
+    letter-spacing: 8px;
+    text-shadow: 0 0 10px #9b59b6, 0 0 20px #8e44ad;
+  }
+  p {
+    font-size: 2.5vw;
+    margin-top: 15px;
+    font-weight: 600;
+    text-shadow: 0 0 6px #7f8c8d;
+  }
+
+  /* Menu hamburguer */
+  .menu-btn {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    width: 35px;
+    height: 30px;
+    cursor: pointer;
     z-index: 20;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
-
-  .sidebar h2 {
-    margin-bottom: 0.6em;
+  .menu-btn div {
+    width: 100%;
+    height: 5px;
+    background: #b18aff;
+    border-radius: 3px;
+    transition: 0.3s;
   }
-
-  .sidebar a {
-    color: #d9b8ff;
+  /* Aba do menu */
+  .menu {
+    position: fixed;
+    top: 0; right: 0;
+    height: 100vh;
+    width: 250px;
+    background: #1c0c3b;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.7);
+    transform: translateX(100%);
+    transition: transform 0.4s ease;
+    padding: 50px 20px;
+    color: #eee;
+    font-size: 1.2rem;
+    z-index: 15;
+  }
+  .menu.show {
+    transform: translateX(0);
+  }
+  .menu a {
+    color: #b18aff;
     text-decoration: none;
-    font-size: 1.3rem;
-    word-break: break-word;
+    font-weight: 700;
   }
-
-  .sidebar a:hover {
+  .menu a:hover {
     text-decoration: underline;
   }
 
+  /* Carros animados - simples SVG com movimento horizontal */
+  .car {
+    position: absolute;
+    bottom: 60px;
+    width: 120px;
+    animation: drive 8s linear infinite;
+    filter: drop-shadow(0 0 4px #b18aff);
+  }
+  .car:nth-child(1) {
+    bottom: 90px;
+    animation-duration: 10s;
+    left: -150px;
+  }
+  .car:nth-child(2) {
+    bottom: 60px;
+    animation-duration: 7s;
+    left: -250px;
+  }
+  .car:nth-child(3) {
+    bottom: 120px;
+    animation-duration: 9s;
+    left: -350px;
+  }
+
+  @keyframes drive {
+    0% { left: -150px; }
+    100% { left: 110vw; }
+  }
 </style>
 </head>
 <body>
-  <div class="track"></div>
 
-  <img src="038f9b13-d9a8-4584-b927-951d31392bca.jpeg" alt="Paul Walker com Skyline" class="paul-skyline" />
+<div class="container">
+  <h1>BITVERSE</h1>
+  <p>Vem por aí...</p>
+</div>
 
-  <img src="65bc81bd-601a-4a7f-810d-efae4d73481a.gif" alt="Carro drifting anime 1" class="drift-gif" />
+<!-- Menu hamburguer -->
+<div class="menu-btn" id="menu-btn">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
 
-  <img src="e56a10ca-bd21-448e-b95a-c3f58a49b144.gif" alt="Carro drifting anime 2" class="drift-gif-2" />
+<!-- Menu lateral -->
+<div class="menu" id="menu">
+  <h2>Apoie os desenvolvedores</h2>
+  <p>Curta, compartilhe e siga nosso TikTok!</p>
+  <a href="https://www.tiktok.com/@bitverse" target="_blank" rel="noopener noreferrer">TikTok @bitverse</a>
+</div>
 
-  <div class="main-text">
-    <h1>BITVERSE</h1>
-    <p>vem por aí...</p>
-  </div>
+<!-- Carros SVG animados -->
+<!-- Simples formas que lembram carros Skyline -->
+<svg class="car" viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg" fill="#b18aff">
+  <rect x="2" y="12" width="50" height="10" rx="3" ry="3" />
+  <polygon points="15,12 25,4 45,4 50,12" />
+  <circle cx="15" cy="24" r="6" fill="#6c4b9c"/>
+  <circle cx="45" cy="24" r="6" fill="#6c4b9c"/>
+</svg>
+<svg class="car" viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg" fill="#a974d4" style="animation-delay: 3s;">
+  <rect x="2" y="12" width="50" height="10" rx="3" ry="3" />
+  <polygon points="10,12 22,6 42,6 48,12" />
+  <circle cx="15" cy="24" r="6" fill="#5a3f85"/>
+  <circle cx="45" cy="24" r="6" fill="#5a3f85"/>
+</svg>
+<svg class="car" viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg" fill="#cba7ff" style="animation-delay: 5s;">
+  <rect x="2" y="12" width="50" height="10" rx="3" ry="3" />
+  <polygon points="18,12 28,5 48,5 53,12" />
+  <circle cx="15" cy="24" r="6" fill="#7b63a5"/>
+  <circle cx="45" cy="24" r="6" fill="#7b63a5"/>
+</svg>
 
-  <div class="sidebar">
-    <h2>Ajude os desenvolvedores</h2>
-    <a href="https://instagram.com/lz.wxzvk0" target="_blank">@lz.wxzvk0</a>
-  </div>
+<script>
+  const menuBtn = document.getElementById('menu-btn');
+  const menu = document.getElementById('menu');
+
+  menuBtn.addEventListener('click', () => {
+    menu.classList.toggle('show');
+  });
+</script>
+
 </body>
 </html>
