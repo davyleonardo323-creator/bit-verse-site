@@ -3,366 +3,647 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>BITVERSE - Melhor Jogo Vem Por Aí</title>
+<title>BITVERSE - Enciclopédia Gamer de Linguagens</title>
 <style>
   /* Reset básico */
   * {
     margin: 0; padding: 0; box-sizing: border-box;
   }
-  body, html {
-    height: 100%;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #0d001f;
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: linear-gradient(135deg, #0a001a, #1a0044);
     color: #eee;
-    overflow-x: hidden;
-  }
-
-  /* Fundo animado canvas */
-  #bgCanvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    z-index: 0;
-    background: linear-gradient(135deg, #1a0033, #0d001f);
-  }
-
-  /* Container principal */
-  .container {
-    position: relative;
-    z-index: 10;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px 15px 80px;
+    font-family: 'Consolas', 'Courier New', monospace, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
   }
-
   /* Header fixo */
   header {
     position: fixed;
     top: 0; left: 0; right: 0;
+    background: rgba(40,0,70,0.95);
     height: 60px;
-    background: rgba(18, 0, 46, 0.85);
-    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 30px;
-    box-shadow: 0 0 20px #7f00ffaa;
-    z-index: 20;
-  }
-  header h1 {
-    font-size: 28px;
+    box-shadow: 0 0 20px #8a33ffaa;
+    z-index: 1000;
+    user-select: none;
     font-weight: 900;
-    color: #b657ff;
-    text-shadow: 0 0 10px #b657ff;
-    cursor: default;
-  }
-
-  nav {
-    display: flex;
-    gap: 20px;
+    color: #c380ff;
+    font-size: 24px;
+    letter-spacing: 8px;
+    text-shadow:
+      0 0 6px #c380ff,
+      0 0 20px #9b00ff;
   }
   nav a {
-    color: #b657ff;
+    color: #b47aff;
     font-weight: 600;
-    text-decoration: none;
+    margin-left: 22px;
     font-size: 16px;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: 0.3s ease;
-    box-shadow: 0 0 8px #b657ff33;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 30px;
+    background: #3d007f44;
+    box-shadow: 0 0 10px #b47aff88;
+    transition: all 0.3s ease;
+    user-select: none;
   }
-  nav a:hover, nav a:focus {
-    background: #b657ff33;
-    box-shadow: 0 0 15px #b657ffcc;
-    outline: none;
+  nav a:hover {
+    background: #a84de0aa;
+    box-shadow: 0 0 25px #d48effcc;
+    color: #f0e6ff;
+    transform: scale(1.1);
+  }
+  main {
+    padding: 90px 30px 60px;
+    max-width: 1080px;
+    margin: 0 auto;
+    flex-grow: 1;
+  }
+  h1.site-title {
+    font-size: 52px;
+    font-weight: 900;
+    color: #d58aff;
+    letter-spacing: 12px;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow:
+      0 0 10px #d58aff,
+      0 0 30px #b15aff,
+      0 0 50px #7b1fa2;
+    user-select: none;
+  }
+  /* Seção de linguagem */
+  section.language {
+    margin-bottom: 60px;
+    background: #2a005a;
+    padding: 25px 30px 30px;
+    border-radius: 18px;
+    box-shadow:
+      0 0 25px #b657ffcc;
+    transition: box-shadow 0.3s ease;
+  }
+  section.language:hover {
+    box-shadow:
+      0 0 40px #d48effdd;
+  }
+  section.language h2 {
+    font-size: 36px;
+    font-weight: 900;
+    color: #bb66ff;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    user-select: none;
+  }
+  section.language h2 img {
+    width: 48px;
+    height: 48px;
+    filter: drop-shadow(0 0 3px #bb66ff);
+  }
+  section.language p.description {
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    color: #d7b3ff;
+    user-select: text;
+  }
+  pre.code-example {
+    background: #1b0033;
+    border-radius: 15px;
+    padding: 15px 20px;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow-x: auto;
+    box-shadow: inset 0 0 15px #7b1fa2cc;
+    color: #e2cfff;
+    font-family: 'Fira Code', monospace, Consolas, monospace;
+    user-select: text;
   }
 
-  main {
-    margin-top: 80px;
-    flex-grow: 1;
+  /* Syntax Highlighting (básico) */
+  .keyword { color: #ff7aff; font-weight: 700; }
+  .string { color: #7affd4; }
+  .comment { color: #7a7a7a; font-style: italic; }
+  .function { color: #ffa07a; }
+  .number { color: #ffbb33; }
+  .operator { color: #d48eff; }
+
+  /* Scrollbar para código */
+  pre::-webkit-scrollbar {
+    height: 8px;
+  }
+  pre::-webkit-scrollbar-track {
+    background: #2a005a;
+    border-radius: 8px;
+  }
+  pre::-webkit-scrollbar-thumb {
+    background: #b657ffcc;
+    border-radius: 8px;
+  }
+
+  /* Ajuste de scroll para seções fixas */
+  section.language {
+    scroll-margin-top: 70px;
+  }
+
+  /* Seção Sobre */
+  section#about {
+    background: #22003d;
+    border-radius: 18px;
+    padding: 30px 40px;
+    margin-bottom: 60px;
+    box-shadow: 0 0 30px #bb55ffaa;
+    color: #e1caff;
+  }
+  section#about h2 {
+    font-size: 38px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #e3bfff;
+    text-shadow:
+      0 0 8px #d48eff;
+  }
+  section#about p {
+    font-size: 17px;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* Formulário contato */
+  section#contact {
+    background: #330055;
+    border-radius: 18px;
+    padding: 30px 40px;
+    margin-bottom: 60px;
+    box-shadow: 0 0 30px #aa55ffbb;
+    color: #d7b7ff;
+  }
+  section#contact h2 {
+    font-size: 38px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #e3bfff;
+    text-shadow:
+      0 0 8px #d48eff;
+  }
+  form {
+    max-width: 500px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 40px;
+    gap: 15px;
   }
-
-  /* Título BITVERSE grande com efeito neon */
-  main .title {
-    font-size: 72px;
-    font-weight: 900;
-    color: #d48eff;
-    text-shadow:
-      0 0 10px #d48eff,
-      0 0 20px #d48eff,
-      0 0 40px #a84de0,
-      0 0 80px #7b1fa2;
-    letter-spacing: 10px;
-  }
-
-  /* Texto MELHOR JOGO e VEM POR AÍ */
-  main .subtitles {
-    display: flex;
-    gap: 30px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  main .subtitles div {
-    font-size: 38px;
-    font-weight: 700;
-    color: #e5b2ff;
-    text-shadow:
-      0 0 6px #b657ff,
-      0 0 10px #7b1fa2;
-    padding: 10px 25px;
-    border: 2px solid #b657ff;
-    border-radius: 25px;
-    cursor: default;
+  form label {
+    font-weight: 600;
+    margin-bottom: 6px;
     user-select: none;
-    transition: 0.3s ease;
   }
-  main .subtitles div:hover {
-    background: #b657ff22;
-    box-shadow: 0 0 20px #b657ffcc;
-  }
-
-  /* Botão Saiba Mais */
-  .btn-saiba {
-    background: linear-gradient(45deg, #7b1fa2, #d48eff);
+  form input, form textarea {
+    padding: 10px 14px;
+    border-radius: 10px;
     border: none;
-    padding: 14px 40px;
-    font-size: 22px;
-    color: white;
+    background: #4b007f;
+    color: #eee;
+    font-size: 16px;
+    font-family: inherit;
+    box-shadow: inset 0 0 10px #a64fff88;
+    resize: vertical;
+    transition: background 0.3s ease;
+  }
+  form input:focus, form textarea:focus {
+    outline: none;
+    background: #6000b0;
+    box-shadow: 0 0 12px #d48eff;
+  }
+  form button {
+    background: #a84de0;
+    color: #fff;
     font-weight: 700;
-    border-radius: 40px;
-    cursor: pointer;
-    box-shadow:
-      0 0 20px #d48eff,
-      0 5px 15px #7b1fa2;
-    transition: all 0.4s ease;
-  }
-  .btn-saiba:hover {
-    background: linear-gradient(45deg, #d48eff, #7b1fa2);
-    box-shadow:
-      0 0 35px #d48eff,
-      0 7px 25px #7b1fa2;
-    transform: translateY(-3px);
-  }
-
-  /* Trailer section */
-  #trailer-section {
-    width: 90%;
-    max-width: 900px;
-    border-radius: 15px;
-    box-shadow:
-      0 0 40px #b657ff88;
-    overflow: hidden;
-  }
-  #trailer-section iframe, #trailer-section video {
-    width: 100%;
-    height: 500px;
+    padding: 12px 0;
+    border-radius: 30px;
     border: none;
-    display: block;
-  }
-  @media (max-width: 600px) {
-    #trailer-section iframe, #trailer-section video {
-      height: 280px;
-    }
-    main .title {
-      font-size: 42px;
-      letter-spacing: 6px;
-    }
-    main .subtitles div {
-      font-size: 24px;
-      padding: 8px 15px;
-    }
-    .btn-saiba {
-      font-size: 18px;
-      padding: 12px 32px;
-    }
-  }
-
-  /* Galeria de carros e pistas */
-  #gallery {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-    gap: 25px;
-    padding: 0 10px 50px;
-  }
-  #gallery figure {
-    background: #1e003f;
-    border: 2px solid #7b1fa2;
-    border-radius: 15px;
-    box-shadow:
-      0 0 15px #b657ffaa;
-    overflow: hidden;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.4s ease;
+    font-size: 18px;
+    text-shadow: 0 0 5px #7b1fa2;
+    transition: background 0.3s ease, transform 0.3s ease;
   }
-  #gallery figure:hover {
+  form button:hover {
+    background: #d48eff;
     transform: scale(1.05);
-    box-shadow:
-      0 0 25px #d48effcc,
-      0 10px 30px #7b1fa2cc;
   }
-  #gallery img {
-    width: 100%;
-    display: block;
-    border-radius: 15px 15px 0 0;
-  }
-  #gallery figcaption {
-    color: #d9b3ff;
-    font-weight: 700;
-    padding: 12px 15px;
-    text-align: center;
-    background: #300067;
-    user-select: none;
+  form button:active {
+    transform: scale(0.95);
   }
 
-  /* Rodapé */
+  /* Footer */
   footer {
     text-align: center;
-    color: #925db0;
+    padding: 20px 15px;
     font-size: 14px;
-    padding: 15px 0;
-    border-top: 1px solid #7b1fa2;
+    color: #925db0;
+    text-shadow: 0 0 8px #7b1fa2;
     user-select: none;
+    background: #1a0033;
+  }
+
+  /* Responsive */
+  @media (max-width: 720px) {
+    h1.site-title {
+      font-size: 38px;
+      letter-spacing: 8px;
+    }
+    section.language h2 {
+      font-size: 28px;
+    }
+    pre.code-example {
+      font-size: 12px;
+    }
+    section#about, section#contact {
+      padding: 20px 25px;
+    }
+  }
+
+  /* Animação leve no título */
+  @keyframes neonGlow {
+    0%, 100% {
+      text-shadow:
+        0 0 10px #d58aff,
+        0 0 30px #b15aff,
+        0 0 50px #7b1fa2;
+    }
+    50% {
+      text-shadow:
+        0 0 20px #e5aaff,
+        0 0 40px #d45aff,
+        0 0 70px #8b29b4;
+    }
+  }
+  h1.site-title {
+    animation: neonGlow 3s ease-in-out infinite;
   }
 </style>
 </head>
 <body>
-
-<canvas id="bgCanvas"></canvas>
-
 <header>
-  <h1>BITVERSE</h1>
-  <nav>
-    <a href="#" id="helpFoundersBtn" target="_blank" rel="noopener">Ajude os fundadores</a>
-    <a href="https://www.tiktok.com/@bitverse" target="_blank" rel="noopener">TikTok @bitverse</a>
+  BITVERSE
+  <nav aria-label="Menu principal">
+    <a href="#python">Python</a>
+    <a href="#javascript">JavaScript</a>
+    <a href="#cpp">C++</a>
+    <a href="#java">Java</a>
+    <a href="#ruby">Ruby</a>
+    <a href="#go">Go</a>
+    <a href="#rust">Rust</a>
+    <a href="#php">PHP</a>
+    <a href="#csharp">C#</a>
+    <a href="#typescript">TypeScript</a>
+    <a href="#swift">Swift</a>
+    <a href="#kotlin">Kotlin</a>
+    <a href="#helpFounders" id="helpFoundersBtn">Ajude os fundadores</a>
   </nav>
 </header>
 
-<div class="container">
-  <main>
-    <div class="title" aria-label="BITVERSE">BITVERSE</div>
-    <div class="subtitles" aria-label="Destaques">
-      <div>MELHOR JOGO</div>
-      <div>VEM POR AÍ</div>
-    </div>
-    <button class="btn-saiba" id="btnSaibaMais" aria-label="Botão Saiba Mais">Saiba mais</button>
+<main>
+  <h1 class="site-title" aria-label="Título do site BITVERSE">BITVERSE</h1>
 
-    <section id="trailer-section" aria-label="Trailer Oficial">
-      <!-- Troque o link abaixo pelo trailer oficial -->
-      <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" title="Trailer Oficial BITVERSE" allowfullscreen allow="autoplay; encrypted-media"></iframe>
-    </section>
+  <!-- Sobre BITVERSE -->
+  <section id="about" tabindex="0" aria-labelledby="title-about" role="region">
+    <h2 id="title-about">Sobre o BITVERSE</h2>
+    <p>
+      BITVERSE é uma enciclopédia gamer de linguagens de programação, feita para mostrar o poder e a beleza
+      do código, misturando tecnologia, arte e paixão por jogos.
+      Navegue pelas linguagens, veja exemplos reais e inspire-se para criar seus próprios mundos digitais.
+    </p>
+  </section>
 
-    <section id="gallery" aria-label="Galeria de Carros e Pistas">
-      <figure>
-        <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=600&q=80" alt="Carro esportivo na pista" loading="lazy" />
-        <figcaption>Carro esportivo</figcaption>
-      </figure>
-      <figure>
-        <img src="https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=600&q=80" alt="Pista de corrida iluminada" loading="lazy" />
-        <figcaption>Pista de corrida</figcaption>
-      </figure>
-      <figure>
-        <img src="https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=600&q=80" alt="Carro drift em movimento" loading="lazy" />
-        <figcaption>Carro drift</figcaption>
-      </figure>
-      <figure>
-        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80" alt="Pista noturna com neon" loading="lazy" />
-        <figcaption>Pista noturna</figcaption>
-      </figure>
-    </section>
-  </main>
-</div>
+  <!-- Python -->
+  <section class="language" id="python" tabindex="0" aria-labelledby="title-python" role="region">
+    <h2 id="title-python">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Logo Python" />
+      Python
+    </h2>
+    <p class="description">Python é uma linguagem poderosa, fácil de aprender e muito usada em ciência de dados, web e automação.</p>
+    <pre class="code-example" aria-label="Exemplo de código Python"><code>
+<span class="keyword">def</span> fibonacci(n):
+    <span class="keyword">a</span>, <span class="keyword">b</span> = 0, 1
+    <span class="keyword">for</span> _ <span class="keyword">in</span> range(n):
+        print(a)
+        a, b = b, a + b
 
-<footer>© 2025 BITVERSE. Todos os direitos reservados.</footer>
+fibonacci(10)
+    </code></pre>
+  </section>
+
+  <!-- JavaScript -->
+  <section class="language" id="javascript" tabindex="0" aria-labelledby="title-javascript" role="region">
+    <h2 id="title-javascript">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="Logo JavaScript" />
+      JavaScript
+    </h2>
+    <p class="description">JavaScript é a linguagem da web, permitindo páginas dinâmicas e interativas em todos os navegadores.</p>
+    <pre class="code-example" aria-label="Exemplo de código JavaScript"><code>
+<span class="keyword">function</span> fibonacci(n) {
+  <span class="keyword">let</span> a = 0, b = 1;
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = 0; i &lt; n; i++) {
+    console.log(a);
+    [a, b] = [b, a + b];
+  }
+}
+fibonacci(10);
+    </code></pre>
+  </section>
+
+  <!-- C++ -->
+  <section class="language" id="cpp" tabindex="0" aria-labelledby="title-cpp" role="region">
+    <h2 id="title-cpp">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="Logo C++" />
+      C++
+    </h2>
+    <p class="description">C++ é uma linguagem rápida e poderosa, muito usada em jogos, sistemas e software de alta performance.</p>
+    <pre class="code-example" aria-label="Exemplo de código C++"><code>
+<span class="keyword">#include</span> &lt;iostream&gt;
+<span class="keyword">using</span> <span class="keyword">namespace</span> std;
+
+<span class="keyword">void</span> fibonacci(int n) {
+  int a = 0, b = 1;
+  <span class="keyword">for</span> (int i = 0; i &lt; n; i++) {
+    cout &lt;&lt; a &lt;&lt; endl;
+    int next = a + b;
+    a = b;
+    b = next;
+  }
+}
+
+int <span class="keyword">main</span>() {
+  fibonacci(10);
+  <span class="keyword">return</span> 0;
+}
+    </code></pre>
+  </section>
+
+  <!-- Java -->
+  <section class="language" id="java" tabindex="0" aria-labelledby="title-java" role="region">
+    <h2 id="title-java">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Logo Java" />
+      Java
+    </h2>
+    <p class="description">Java é uma linguagem robusta e multiplataforma, usada em aplicativos Android, enterprise e sistemas grandes.</p>
+    <pre class="code-example" aria-label="Exemplo de código Java"><code>
+<span class="keyword">public class</span> Fibonacci {
+  <span class="keyword">public static void</span> fibonacci(int n) {
+    int a = 0, b = 1;
+    <span class="keyword">for</span> (int i = 0; i &lt; n; i++) {
+      System.out.println(a);
+      int next = a + b;
+      a = b;
+      b = next;
+    }
+  }
+  <span class="keyword">public static void main(String[] args)</span> {
+    fibonacci(10);
+  }
+}
+    </code></pre>
+  </section>
+
+  <!-- Ruby -->
+  <section class="language" id="ruby" tabindex="0" aria-labelledby="title-ruby" role="region">
+    <h2 id="title-ruby">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg" alt="Logo Ruby" />
+      Ruby
+    </h2>
+    <p class="description">Ruby é uma linguagem elegante, fácil de ler, muito usada em desenvolvimento web com Rails.</p>
+    <pre class="code-example" aria-label="Exemplo de código Ruby"><code>
+<span class="keyword">def</span> fibonacci(n)
+  a, b = 0, 1
+  n.times do
+    puts a
+    a, b = b, a + b
+  end
+end
+
+fibonacci(10)
+    </code></pre>
+  </section>
+
+  <!-- Go -->
+  <section class="language" id="go" tabindex="0" aria-labelledby="title-go" role="region">
+    <h2 id="title-go">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" alt="Logo Go" />
+      Go
+    </h2>
+    <p class="description">Go (Golang) é uma linguagem simples, eficiente e rápida, ideal para sistemas e serviços em nuvem.</p>
+    <pre class="code-example" aria-label="Exemplo de código Go"><code>
+<span class="keyword">package</span> main
+<span class="keyword">import</span> "fmt"
+
+<span class="keyword">func</span> fibonacci(n int) {
+    a, b := 0, 1
+    <span class="keyword">for</span> i := 0; i &lt; n; i++ {
+        fmt.Println(a)
+        a, b = b, a + b
+    }
+}
+
+<span class="keyword">func</span> main() {
+    fibonacci(10)
+}
+    </code></pre>
+  </section>
+
+  <!-- Rust -->
+  <section class="language" id="rust" tabindex="0" aria-labelledby="title-rust" role="region">
+    <h2 id="title-rust">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg" alt="Logo Rust" />
+      Rust
+    </h2>
+    <p class="description">Rust é uma linguagem segura e rápida, focada em performance e segurança sem garbage collector.</p>
+    <pre class="code-example" aria-label="Exemplo de código Rust"><code>
+<span class="keyword">fn</span> fibonacci(n: u32) {
+    let (mut a, mut b) = (0, 1);
+    <span class="keyword">for</span> _ <span class="keyword">in</span> 0..n {
+        println!("{}", a);
+        let next = a + b;
+        a = b;
+        b = next;
+    }
+}
+
+<span class="keyword">fn</span> main() {
+    fibonacci(10);
+}
+    </code></pre>
+  </section>
+
+  <!-- PHP -->
+  <section class="language" id="php" tabindex="0" aria-labelledby="title-php" role="region">
+    <h2 id="title-php">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="Logo PHP" />
+      PHP
+    </h2>
+    <p class="description">PHP é uma linguagem de scripts amplamente usada para desenvolvimento web dinâmico e backend.</p>
+    <pre class="code-example" aria-label="Exemplo de código PHP"><code>
+<span class="keyword">&lt;?php</span>
+function fibonacci($n) {
+    $a = 0; $b = 1;
+    for ($i = 0; $i &lt; $n; $i++) {
+        echo $a . "\n";
+        $next = $a + $b;
+        $a = $b;
+        $b = $next;
+    }
+}
+fibonacci(10);
+<span class="keyword">?&gt;</span>
+    </code></pre>
+  </section>
+
+  <!-- C# -->
+  <section class="language" id="csharp" tabindex="0" aria-labelledby="title-csharp" role="region">
+    <h2 id="title-csharp">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" alt="Logo C#" />
+      C#
+    </h2>
+    <p class="description">C# é uma linguagem versátil da Microsoft, muito usada em jogos (Unity), apps e enterprise.</p>
+    <pre class="code-example" aria-label="Exemplo de código C#"><code>
+<span class="keyword">using</span> System;
+
+<span class="keyword">class</span> Program {
+  <span class="keyword">static void</span> fibonacci(int n) {
+    int a = 0, b = 1;
+    <span class="keyword">for</span> (int i = 0; i &lt; n; i++) {
+      Console.WriteLine(a);
+      int next = a + b;
+      a = b;
+      b = next;
+    }
+  }
+
+  <span class="keyword">static void Main</span>(string[] args) {
+    fibonacci(10);
+  }
+}
+    </code></pre>
+  </section>
+
+  <!-- TypeScript -->
+  <section class="language" id="typescript" tabindex="0" aria-labelledby="title-typescript" role="region">
+    <h2 id="title-typescript">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="Logo TypeScript" />
+      TypeScript
+    </h2>
+    <p class="description">TypeScript é um superconjunto do JavaScript que adiciona tipagem estática para código mais seguro.</p>
+    <pre class="code-example" aria-label="Exemplo de código TypeScript"><code>
+<span class="keyword">function</span> fibonacci(n: number): void {
+  <span class="keyword">let</span> a = 0, b = 1;
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = 0; i &lt; n; i++) {
+    console.log(a);
+    [a, b] = [b, a + b];
+  }
+}
+fibonacci(10);
+    </code></pre>
+  </section>
+
+  <!-- Swift -->
+  <section class="language" id="swift" tabindex="0" aria-labelledby="title-swift" role="region">
+    <h2 id="title-swift">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" alt="Logo Swift" />
+      Swift
+    </h2>
+    <p class="description">Swift é a linguagem moderna da Apple para desenvolvimento iOS, macOS e sistemas seguros.</p>
+    <pre class="code-example" aria-label="Exemplo de código Swift"><code>
+<span class="keyword">func</span> fibonacci(_ n: Int) {
+  var a = 0
+  var b = 1
+  <span class="keyword">for</span> _ <span class="keyword">in</span> 0..<n {
+    print(a)
+    let next = a + b
+    a = b
+    b = next
+  }
+}
+
+fibonacci(10)
+    </code></pre>
+  </section>
+
+  <!-- Kotlin -->
+  <section class="language" id="kotlin" tabindex="0" aria-labelledby="title-kotlin" role="region">
+    <h2 id="title-kotlin">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" alt="Logo Kotlin" />
+      Kotlin
+    </h2>
+    <p class="description">Kotlin é a linguagem moderna para Android, combinando concisão e interoperabilidade com Java.</p>
+    <pre class="code-example" aria-label="Exemplo de código Kotlin"><code>
+<span class="keyword">fun</span> fibonacci(n: Int) {
+  var a = 0
+  var b = 1
+  <span class="keyword">repeat</span>(n) {
+    println(a)
+    val next = a + b
+    a = b
+    b = next
+  }
+}
+
+fibonacci(10)
+    </code></pre>
+  </section>
+
+  <!-- Formulário Contato -->
+  <section id="contact" tabindex="0" aria-labelledby="title-contact" role="region">
+    <h2 id="title-contact">Fale Conosco</h2>
+    <form id="contactForm" novalidate>
+      <label for="name">Nome</label>
+      <input type="text" id="name" name="name" required placeholder="Seu nome" aria-required="true" />
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required placeholder="seu@email.com" aria-required="true" />
+      <label for="message">Mensagem</label>
+      <textarea id="message" name="message" rows="5" required placeholder="Escreva sua mensagem aqui" aria-required="true"></textarea>
+      <button type="submit" aria-label="Enviar mensagem">Enviar</button>
+    </form>
+  </section>
+</main>
+
+<footer>
+  © 2025 BITVERSE. Todos os direitos reservados. &nbsp; | &nbsp;
+  <a href="https://www.tiktok.com/@bitverse" target="_blank" rel="noopener" style="color:#d48eff;text-decoration:none;">TikTok @bitverse</a>
+</footer>
 
 <script>
-  // Abrir "Ajude os fundadores" em nova aba (exemplo, pode alterar a URL)
+  // Abrir link "Ajude os fundadores" em nova aba
   document.getElementById('helpFoundersBtn').addEventListener('click', e => {
     e.preventDefault();
     window.open('https://bitverse.example.com/ajude', '_blank', 'noopener');
   });
 
-  // Botão Saiba Mais - scroll suave até galeria
-  document.getElementById('btnSaibaMais').addEventListener('click', () => {
-    document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+  // Validação simples do formulário de contato
+  const form = document.getElementById('contactForm');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
+
+    if (!name || !email || !message) {
+      alert('Por favor, preencha todos os campos antes de enviar.');
+      return;
+    }
+    // Simula envio
+    alert(`Obrigado, ${name}! Sua mensagem foi enviada com sucesso.`);
+    form.reset();
   });
-
-  // Fundo animado em canvas com partículas neon (simples)
-  const canvas = document.getElementById('bgCanvas');
-  const ctx = canvas.getContext('2d');
-  let width, height;
-  let particles = [];
-
-  class Particle {
-    constructor() {
-      this.reset();
-    }
-    reset() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.size = 1 + Math.random() * 2;
-      this.speedX = (Math.random() - 0.5) * 0.5;
-      this.speedY = (Math.random() - 0.5) * 0.5;
-      this.color = `rgba(182,87,255,${0.2 + Math.random()*0.6})`;
-    }
-    update() {
-      this.x += this.speedX;
-      this.y += this.speedY;
-      if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
-        this.reset();
-      }
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.shadowColor = this.color;
-      ctx.shadowBlur = 10;
-      ctx.fillStyle = this.color;
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function initParticles(count=120) {
-    particles = [];
-    for(let i=0; i<count; i++) {
-      particles.push(new Particle());
-    }
-  }
-
-  function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-  }
-
-  function animate() {
-    ctx.clearRect(0,0,width,height);
-    particles.forEach(p => {
-      p.update();
-      p.draw();
-    });
-    requestAnimationFrame(animate);
-  }
-
-  window.addEventListener('resize', () => {
-    resize();
-    initParticles();
-  });
-
-  resize();
-  initParticles();
-  animate();
 </script>
-
 </body>
 </html>
