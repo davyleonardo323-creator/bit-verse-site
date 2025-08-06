@@ -5,40 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BITVERSE - Vem aí</title>
   <style>
+    /* Reset */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
       height: 100vh;
-      background: linear-gradient(135deg, #0d0d0d, #1a001a);
-      color: #eee;
+      margin: 0;
       font-family: 'Orbitron', sans-serif;
+      color: #eee;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
+      background: #000;
+      overflow: hidden;
+      position: relative;
     }
+
+    /* Plano de fundo animado "gamer hacker" */
+    #backgroundCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background: #000;
+    }
+
     h1 {
       font-size: 5rem;
       color: #a200ff;
       text-shadow: 0 0 10px #a200ff, 0 0 20px #7700cc;
       margin-bottom: 20px;
       letter-spacing: 4px;
+      position: relative;
+      z-index: 1;
     }
+
     p {
       font-size: 2rem;
       color: #ccc;
       text-shadow: 0 0 5px #550088;
+      position: relative;
+      z-index: 1;
     }
+
     footer {
       position: absolute;
       bottom: 10px;
       font-size: 0.9rem;
       color: #444;
+      width: 100%;
+      text-align: center;
+      z-index: 1;
     }
+
+    /* Contador */
+    #countdown {
+      font-size: 1.8rem;
+      color: #00ff00;
+      text-shadow: 0 0 10px #00ff00;
+      margin-top: 10px;
+      font-family: monospace;
+      letter-spacing: 2px;
+      position: relative;
+      z-index: 1;
+    }
+
     @media (max-width: 600px) {
       h1 {
         font-size: 3rem;
@@ -46,13 +85,100 @@
       p {
         font-size: 1.5rem;
       }
+      #countdown {
+        font-size: 1.2rem;
+      }
     }
   </style>
+  <!-- Fonte gamer -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
+
+  <canvas id="backgroundCanvas"></canvas>
+
   <h1>BITVERSE</h1>
   <p>vem por aí...</p>
+
+  <div id="countdown"></div>
+
   <footer>&copy; 2025 BITVERSE. Todos os direitos reservados.</footer>
+
+  <script>
+    // Plano de fundo animado "gamer hacker" estilo Matrix/hex
+    const canvas = document.getElementById('backgroundCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let columns;
+    const fontSize = 14;
+    let drops = [];
+
+    const characters = '0123456789ABCDEF';
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      columns = Math.floor(width / fontSize);
+      drops = [];
+      for (let x = 0; x < columns; x++) {
+        drops[x] = Math.random() * height;
+      }
+    }
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.fillStyle = '#00ff00';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = characters.charAt(Math.floor(Math.random() * characters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    setInterval(draw, 50);
+
+    // Contador regressivo de 5 dias
+
+    // Data alvo: 5 dias a partir do momento que o site for aberto
+    const countdownElement = document.getElementById('countdown');
+    const targetDate = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000); 
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        countdownElement.textContent = "Lançamento do BITVERSE!";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      countdownElement.textContent = `Lançamento em ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+  </script>
+
 </body>
 </html>
