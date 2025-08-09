@@ -10,7 +10,6 @@ const PORT = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// SESSÃO
 app.use(session({
   secret: 'bitverse-secret-key',
   resave: false,
@@ -18,23 +17,20 @@ app.use(session({
   cookie: { maxAge: 3600000 }
 }));
 
-// Usuários válidos
 const USERS = {
   leonardoggadmin: '35983408aA__',
   arthurggadmin: 'arthuradmin22'
 };
 
-// Caminho do arquivo de dados do site
 const DATA_PATH = path.join(__dirname, 'data.json');
 
-// Carrega dados do site ou cria padrão
 function loadData() {
   if (!fs.existsSync(DATA_PATH)) {
     const defaultData = {
       titulo: "BITVERSE",
       subtitulo: "VEM POR AÍ...",
       descricao: "O melhor jogo de tiro que você vai jogar!",
-      trailer: "https://www.youtube.com/embed/5qap5aO4i9A", // link youtube só exemplo
+      trailer: "https://www.youtube.com/embed/5qap5aO4i9A",
       secao1: "Aqui você pode editar essa seção 1",
       secao2: "Aqui você pode editar essa seção 2",
       secao3: "Aqui você pode editar essa seção 3"
@@ -42,16 +38,13 @@ function loadData() {
     fs.writeFileSync(DATA_PATH, JSON.stringify(defaultData, null, 2));
     return defaultData;
   }
-  const dataRaw = fs.readFileSync(DATA_PATH);
-  return JSON.parse(dataRaw);
+  return JSON.parse(fs.readFileSync(DATA_PATH));
 }
 
-// Salva dados editados
 function saveData(data) {
   fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2));
 }
 
-// Middleware para proteger rota do painel admin
 function authMiddleware(req, res, next) {
   if (req.session && req.session.user) {
     next();
@@ -60,184 +53,255 @@ function authMiddleware(req, res, next) {
   }
 }
 
-// Rota home (página pública)
+function escapeHtml(text) {
+  if(!text) return '';
+  return text.replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+}
+
+// Rota home
 app.get('/', (req, res) => {
   const data = loadData();
   res.send(`
-  <!DOCTYPE html>
-  <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Bitverse - Jogo de Tiro</title>
-    <style>
-      @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
-      body {
-        margin: 0; padding: 0;
-        background: #0a0a0a;
-        color: #eee;
-        font-family: 'Orbitron', monospace, sans-serif;
-        text-align: center;
-      }
-      header {
-        background: linear-gradient(90deg, #6a00ff, #00e0ff);
-        padding: 2rem 1rem;
-        box-shadow: 0 0 10px #00e0ff;
-      }
-      h1 {
-        font-size: 4rem;
-        margin: 0;
-        letter-spacing: 0.3rem;
-        text-shadow: 0 0 10px #6a00ff;
-      }
-      h2 {
-        font-weight: normal;
-        margin-top: 0.5rem;
-        color: #aaa;
-        text-shadow: 0 0 5px #00e0ff;
-      }
-      main {
-        max-width: 900px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-      }
-      iframe {
-        border: none;
-        width: 100%;
-        height: 400px;
-        border-radius: 10px;
-        box-shadow: 0 0 20px #00e0ff;
-      }
-      section {
-        background: #111;
-        margin-top: 2rem;
-        padding: 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0 0 10px #6a00ff;
-      }
-      .login-btn {
-        margin-top: 1.5rem;
-        padding: 0.8rem 1.5rem;
-        font-size: 1.1rem;
-        border: none;
-        background: #6a00ff;
-        color: white;
-        border-radius: 6px;
-        cursor: pointer;
-        box-shadow: 0 0 10px #6a00ff;
-        transition: background-color 0.3s ease;
-      }
-      .login-btn:hover {
-        background: #4500bb;
-      }
-      /* Pop-up login */
-      #loginPopup {
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.85);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 999;
-      }
-      #loginPopup form {
-        background: #111;
-        padding: 2rem;
-        border-radius: 10px;
-        box-shadow: 0 0 15px #6a00ff;
-        width: 320px;
-        color: white;
-        display: flex;
-        flex-direction: column;
-      }
-      #loginPopup form input {
-        margin-bottom: 1rem;
-        padding: 0.7rem;
-        font-size: 1rem;
-        border: none;
-        border-radius: 5px;
-      }
-      #loginPopup form button {
-        padding: 0.7rem;
-        background: #6a00ff;
-        border: none;
-        color: white;
-        font-weight: bold;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      }
-      #loginPopup form button:hover {
-        background: #4500bb;
-      }
-      #loginPopup .closeBtn {
-        background: transparent;
-        border: none;
-        color: #aaa;
-        font-size: 1.3rem;
-        cursor: pointer;
-        position: absolute;
-        top: 20px;
-        right: 20px;
-      }
-      #errorMsg {
-        color: #f55;
-        font-weight: bold;
-        margin-bottom: 1rem;
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>${data.titulo}</h1>
-      <h2>${data.subtitulo}</h2>
-    </header>
-    <main>
-      <p style="font-size:1.3rem; max-width:700px; margin: 0 auto;">${data.descricao}</p>
-      <iframe src="${data.trailer}" allowfullscreen></iframe>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bitverse - Jogo de Tiro</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+  body {
+    margin: 0; padding: 0;
+    background: #0a0a0a;
+    color: #eee;
+    font-family: 'Orbitron', monospace, sans-serif;
+  }
+  header {
+    background: linear-gradient(90deg, #6a00ff, #00e0ff);
+    padding: 2rem 1rem;
+    box-shadow: 0 0 10px #00e0ff;
+    text-align: center;
+  }
+  h1 {
+    font-size: 4rem;
+    margin: 0;
+    letter-spacing: 0.3rem;
+    text-shadow: 0 0 10px #6a00ff;
+  }
+  h2 {
+    font-weight: normal;
+    margin-top: 0.5rem;
+    color: #aaa;
+    text-shadow: 0 0 5px #00e0ff;
+  }
+  main {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    text-align: center;
+  }
+  iframe {
+    border: none;
+    width: 100%;
+    height: 400px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #00e0ff;
+  }
+  section {
+    background: #111;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #6a00ff;
+    text-align: left;
+  }
+  /* Menu Hambúrguer */
+  #menuToggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    -webkit-user-select:none;
+    user-select:none;
+  }
+  #menuToggle input {
+    display: block;
+    width: 30px;
+    height: 25px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    cursor: pointer;
+    opacity: 0;
+    z-index: 2000;
+  }
+  #menuToggle span {
+    display: block;
+    width: 30px;
+    height: 4px;
+    margin-bottom: 6px;
+    position: relative;
+    background: #6a00ff;
+    border-radius: 3px;
+    z-index: 1000;
+    box-shadow: 0 0 10px #6a00ff;
+    transition: all 0.3s ease;
+  }
+  #menu {
+    position: fixed;
+    width: 150px;
+    top: 55px;
+    right: 20px;
+    background: #111;
+    border-radius: 8px;
+    box-shadow: 0 0 15px #6a00ff;
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    z-index: 999;
+  }
+  #menuToggle input:checked ~ #menu {
+    opacity: 1;
+    visibility: visible;
+  }
+  #menu a {
+    color: #6a00ff;
+    text-decoration: none;
+    display: block;
+    padding: 0.5rem 0;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  #menu a:hover {
+    text-decoration: underline;
+  }
 
-      <section>${data.secao1}</section>
-      <section>${data.secao2}</section>
-      <section>${data.secao3}</section>
+  /* Pop-up login */
+  #loginPopup {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+  #loginPopup form {
+    background: #111;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #6a00ff;
+    width: 320px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+  }
+  #loginPopup form input {
+    margin-bottom: 1rem;
+    padding: 0.7rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+  }
+  #loginPopup form button {
+    padding: 0.7rem;
+    background: #6a00ff;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  #loginPopup form button:hover {
+    background: #4500bb;
+  }
+  #loginPopup .closeBtn {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    font-size: 1.3rem;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  #errorMsg {
+    color: #f55;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    display: none;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>${data.titulo}</h1>
+    <h2>${data.subtitulo}</h2>
+  </header>
+  <main>
+    <p style="font-size:1.3rem; max-width:700px; margin: 0 auto;">${data.descricao}</p>
+    <iframe src="${data.trailer}" allowfullscreen></iframe>
+    <section>${data.secao1}</section>
+    <section>${data.secao2}</section>
+    <section>${data.secao3}</section>
+  </main>
 
-      <button class="login-btn" id="openLoginBtn">Login Adm</button>
-    </main>
+  <!-- Menu Hambúrguer -->
+  <div id="menuToggle">
+    <input type="checkbox" />
+    <span></span>
+    <span></span>
+    <span></span>
+    <nav id="menu">
+      <a href="#" id="openLoginBtn">Login Admin</a>
+    </nav>
+  </div>
 
-    <!-- Login Popup -->
-    <div id="loginPopup">
-      <form id="loginForm" method="POST" action="/login">
-        <button type="button" class="closeBtn" id="closeLoginBtn">&times;</button>
-        <h3>Login Admin</h3>
-        <div id="errorMsg">Usuário ou senha inválidos</div>
-        <input type="text" name="username" placeholder="Usuário" required autocomplete="off" />
-        <input type="password" name="password" placeholder="Senha" required autocomplete="off" />
-        <button type="submit">Entrar</button>
-      </form>
-    </div>
+  <!-- Login Popup -->
+  <div id="loginPopup">
+    <form id="loginForm" method="POST" action="/login">
+      <button type="button" class="closeBtn" id="closeLoginBtn">&times;</button>
+      <h3>Login Admin</h3>
+      <div id="errorMsg">Usuário ou senha inválidos</div>
+      <input type="text" name="username" placeholder="Usuário" required autocomplete="off" />
+      <input type="password" name="password" placeholder="Senha" required autocomplete="off" />
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
 
-    <script>
-      const loginPopup = document.getElementById('loginPopup');
-      const openLoginBtn = document.getElementById('openLoginBtn');
-      const closeLoginBtn = document.getElementById('closeLoginBtn');
-      const errorMsg = document.getElementById('errorMsg');
+<script>
+  const loginPopup = document.getElementById('loginPopup');
+  const openLoginBtn = document.getElementById('openLoginBtn');
+  const closeLoginBtn = document.getElementById('closeLoginBtn');
+  const errorMsg = document.getElementById('errorMsg');
+  const menuToggleCheckbox = document.querySelector('#menuToggle input[type=checkbox]');
 
-      openLoginBtn.addEventListener('click', () => {
-        errorMsg.style.display = 'none';
-        loginPopup.style.display = 'flex';
-      });
-      closeLoginBtn.addEventListener('click', () => {
-        loginPopup.style.display = 'none';
-      });
+  openLoginBtn.addEventListener('click', e => {
+    e.preventDefault();
+    errorMsg.style.display = 'none';
+    loginPopup.style.display = 'flex';
+    // Fecha o menu
+    menuToggleCheckbox.checked = false;
+  });
+  closeLoginBtn.addEventListener('click', () => {
+    loginPopup.style.display = 'none';
+  });
 
-      // Se a URL tem ?error=1 mostra erro
-      if(window.location.search.includes('error=1')) {
-        errorMsg.style.display = 'block';
-        loginPopup.style.display = 'flex';
-      }
-    </script>
-  </body>
-  </html>
+  // Se a URL tem ?error=1 mostra erro
+  if(window.location.search.includes('error=1')) {
+    errorMsg.style.display = 'block';
+    loginPopup.style.display = 'flex';
+  }
+</script>
+
+</body>
+</html>
   `);
 });
 
@@ -263,106 +327,105 @@ app.get('/logout', (req, res) => {
 app.get('/admin', authMiddleware, (req, res) => {
   const data = loadData();
   res.send(`
-  <!DOCTYPE html>
-  <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Painel Admin - Bitverse</title>
-    <style>
-      body {
-        background: #0a0a0a;
-        color: #eee;
-        font-family: monospace, monospace;
-        margin: 0; padding: 2rem;
-      }
-      h1 {
-        color: #6a00ff;
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-      form {
-        max-width: 700px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-      label {
-        font-weight: bold;
-        color: #00e0ff;
-      }
-      input, textarea {
-        background: #111;
-        border: none;
-        border-radius: 5px;
-        color: #eee;
-        padding: 0.7rem;
-        font-family: monospace, monospace;
-        font-size: 1rem;
-        resize: vertical;
-      }
-      textarea {
-        min-height: 100px;
-      }
-      button {
-        background: #6a00ff;
-        border: none;
-        padding: 1rem;
-        color: white;
-        font-weight: bold;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 1.1rem;
-        box-shadow: 0 0 15px #6a00ff;
-        transition: background-color 0.3s ease;
-      }
-      button:hover {
-        background: #4500bb;
-      }
-      .logout {
-        display: block;
-        margin: 2rem auto 0;
-        text-align: center;
-        color: #00e0ff;
-        text-decoration: none;
-        font-weight: bold;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Painel Admin - Bitverse</h1>
-    <form method="POST" action="/admin/save">
-      <label>Título Principal (BITVERSE)</label>
-      <input type="text" name="titulo" value="${escapeHtml(data.titulo)}" required />
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Painel Admin - Bitverse</title>
+<style>
+  body {
+    background: #0a0a0a;
+    color: #eee;
+    font-family: monospace, monospace;
+    margin: 0; padding: 2rem;
+  }
+  h1 {
+    color: #6a00ff;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  form {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  label {
+    font-weight: bold;
+    color: #00e0ff;
+  }
+  input, textarea {
+    background: #111;
+    border: none;
+    border-radius: 5px;
+    color: #eee;
+    padding: 0.7rem;
+    font-family: monospace, monospace;
+    font-size: 1rem;
+    resize: vertical;
+  }
+  textarea {
+    min-height: 100px;
+  }
+  button {
+    background: #6a00ff;
+    border: none;
+    padding: 1rem;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    box-shadow: 0 0 15px #6a00ff;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background: #4500bb;
+  }
+  .logout {
+    display: block;
+    margin: 2rem auto 0;
+    text-align: center;
+    color: #00e0ff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+  <h1>Painel Admin - Bitverse</h1>
+  <form method="POST" action="/admin/save">
+    <label>Título Principal (BITVERSE)</label>
+    <input type="text" name="titulo" value="${escapeHtml(data.titulo)}" required />
 
-      <label>Subtítulo (VEM POR AÍ...)</label>
-      <input type="text" name="subtitulo" value="${escapeHtml(data.subtitulo)}" required />
+    <label>Subtítulo (VEM POR AÍ...)</label>
+    <input type="text" name="subtitulo" value="${escapeHtml(data.subtitulo)}" required />
 
-      <label>Descrição</label>
-      <textarea name="descricao" required>${escapeHtml(data.descricao)}</textarea>
+    <label>Descrição</label>
+    <textarea name="descricao" required>${escapeHtml(data.descricao)}</textarea>
 
-      <label>Link do trailer (embed do YouTube)</label>
-      <input type="text" name="trailer" value="${escapeHtml(data.trailer)}" required />
+    <label>Link do trailer (embed do YouTube)</label>
+    <input type="text" name="trailer" value="${escapeHtml(data.trailer)}" required />
 
-      <label>Seção 1</label>
-      <textarea name="secao1" required>${escapeHtml(data.secao1)}</textarea>
+    <label>Seção 1</label>
+    <textarea name="secao1" required>${escapeHtml(data.secao1)}</textarea>
 
-      <label>Seção 2</label>
-      <textarea name="secao2" required>${escapeHtml(data.secao2)}</textarea>
+    <label>Seção 2</label>
+    <textarea name="secao2" required>${escapeHtml(data.secao2)}</textarea>
 
-      <label>Seção 3</label>
-      <textarea name="secao3" required>${escapeHtml(data.secao3)}</textarea>
+    <label>Seção 3</label>
+    <textarea name="secao3" required>${escapeHtml(data.secao3)}</textarea>
 
-      <button type="submit">Salvar Alterações</button>
-    </form>
-    <a href="/logout" class="logout">Logout</a>
-  </body>
-  </html>
+    <button type="submit">Salvar Alterações</button>
+  </form>
+  <a href="/logout" class="logout">Logout</a>
+</body>
+</html>
   `);
 });
 
-// Recebe o POST do formulário para salvar alterações
 app.post('/admin/save', authMiddleware, (req, res) => {
   const newData = {
     titulo: req.body.titulo || '',
@@ -376,16 +439,6 @@ app.post('/admin/save', authMiddleware, (req, res) => {
   saveData(newData);
   res.redirect('/admin');
 });
-
-// Função para escapar HTML (proteção básica contra injeção)
-function escapeHtml(text) {
-  if(!text) return '';
-  return text.replace(/&/g, "&amp;")
-             .replace(/</g, "&lt;")
-             .replace(/>/g, "&gt;")
-             .replace(/"/g, "&quot;")
-             .replace(/'/g, "&#039;");
-}
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
